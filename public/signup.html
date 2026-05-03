@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Account</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+      :root {
+        --bg: #f7f8ff;
+        --ink: #233148;
+        --muted: #6e7990;
+        --panel-border: rgba(202, 210, 234, 0.72);
+        --input: rgba(255, 255, 255, 0.94);
+        --input-tint: #edf3ff;
+        --input-border: rgba(205, 213, 235, 0.9);
+        --primary: #6a63dc;
+        --primary-dark: #5c55cf;
+        --highlight: #ece8ff;
+        --shadow: 0 30px 80px rgba(135, 146, 185, 0.18);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: Inter, system-ui, sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(
+            circle at 50% 0%,
+            rgba(255, 234, 202, 0.44),
+            transparent 28%
+          ),
+          radial-gradient(
+            circle at 18% 34%,
+            rgba(220, 218, 255, 0.7),
+            transparent 38%
+          ),
+          radial-gradient(
+            circle at 84% 64%,
+            rgba(218, 240, 255, 0.74),
+            transparent 38%
+          ),
+          var(--bg);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .page {
+        position: relative;
+        min-height: 100vh;
+        overflow: hidden;
+      }
+
+      .grain {
+        position: absolute;
+        inset: 0;
+        opacity: 0.26;
+        background: repeating-linear-gradient(
+          100deg,
+          rgba(255, 255, 255, 0.52) 0,
+          rgba(255, 255, 255, 0.52) 38px,
+          rgba(229, 235, 255, 0.34) 38px,
+          rgba(229, 235, 255, 0.34) 92px
+        );
+        filter: blur(1.2px);
+        pointer-events: none;
+      }
+
+      .doodle {
+        position: absolute;
+        z-index: 0;
+        opacity: 0.9;
+        pointer-events: none;
+      }
+
+      .doodle.one {
+        top: 14.5%;
+        left: 25.2%;
+      }
+
+      .doodle.two,
+      .doodle.three {
+        display: none;
+      }
+
+      .doodle.four {
+        right: 16.4%;
+        bottom: 7.2%;
+      }
+
+      .dot {
+        position: absolute;
+        z-index: 0;
+        width: 20px;
+        height: 20px;
+        border-radius: 999px;
+        pointer-events: none;
+      }
+
+      .dot.a {
+        top: 33.3%;
+        left: 8%;
+        background: #ffd267;
+      }
+
+      .dot.b {
+        top: 15.2%;
+        right: 8%;
+        background: #7ee0c6;
+      }
+
+      .dot.c,
+      .dot.d {
+        display: none;
+      }
+
+      .shell {
+        position: relative;
+        z-index: 1;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 56px 20px 48px;
+      }
+
+      .hero {
+        width: 100%;
+        max-width: 920px;
+        text-align: center;
+      }
+
+      .eyebrow {
+        margin: 0 0 10px;
+        font-size: 0.96rem;
+        font-weight: 700;
+        letter-spacing: 0.01em;
+        color: #5f61d8;
+      }
+
+      .title {
+        margin: 0;
+        font-size: clamp(2rem, 2.2vw, 3.3rem);
+        line-height: 1.02;
+        letter-spacing: -0.05em;
+        font-weight: 850;
+        color: var(--ink);
+      }
+
+      .title-mark {
+        display: inline-block;
+        margin-left: 0.18em;
+        padding: 0.04em 0.22em 0.1em;
+        border-radius: 16px;
+        background: var(--highlight);
+      }
+
+      .subtitle {
+        max-width: 520px;
+        margin: 12px auto 0;
+        font-size: 1.02rem;
+        line-height: 1.5;
+        color: var(--muted);
+      }
+
+      .card {
+        width: 100%;
+        max-width: 500px;
+        margin: 40px auto 0;
+        padding: 34px 34px 36px;
+        text-align: left;
+        border: 1px solid var(--panel-border);
+        border-radius: 26px;
+        backdrop-filter: blur(18px);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.84) 0%,
+          rgba(255, 255, 255, 0.74) 100%
+        );
+        box-shadow: var(--shadow);
+      }
+
+      .context-box {
+        border: 1px solid rgba(194, 204, 226, 0.6);
+        border-radius: 16px;
+        background: rgba(245, 247, 255, 0.92);
+        color: #45499b;
+      }
+
+      .field-label {
+        display: block;
+        margin-bottom: 9px;
+        font-size: 0.94rem;
+        font-weight: 700;
+        color: #323b4b;
+      }
+
+      input {
+        width: 100%;
+        height: 48px;
+        padding: 12px 15px;
+        border: 1px solid var(--input-border) !important;
+        border-radius: 14px;
+        background: var(--input) !important;
+        color: #23254a !important;
+        font-size: 0.97rem;
+        transition:
+          border-color 0.2s ease,
+          box-shadow 0.2s ease,
+          transform 0.2s ease,
+          background 0.2s ease;
+      }
+
+      input::placeholder {
+        color: #9199b2;
+      }
+
+      input:focus {
+        outline: none;
+        border-color: rgba(108, 99, 232, 0.38) !important;
+        box-shadow: 0 0 0 4px rgba(108, 99, 232, 0.1) !important;
+        background: var(--input-tint) !important;
+        transform: translateY(-1px);
+      }
+
+      button {
+        height: 48px;
+        background: var(--primary) !important;
+        color: white !important;
+        font-size: 0.98rem;
+        font-weight: 700 !important;
+        cursor: pointer;
+        box-shadow: 0 14px 28px rgba(106, 99, 220, 0.26);
+        transition:
+          background 0.2s ease,
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+
+      button:hover {
+        background: var(--primary-dark) !important;
+        transform: translateY(-1px);
+        box-shadow: 0 18px 34px rgba(106, 99, 220, 0.3);
+      }
+
+      button:disabled {
+        cursor: not-allowed;
+        transform: none !important;
+        box-shadow: none;
+        opacity: 0.6;
+      }
+
+      .footer-link {
+        color: #5e5ee6;
+      }
+
+      @media (max-width: 640px) {
+        .shell {
+          padding: 28px 14px 24px;
+        }
+
+        .card {
+          max-width: 100%;
+          margin-top: 28px;
+          padding: 24px 18px 22px;
+          border-radius: 22px;
+        }
+
+        .title {
+          font-size: clamp(2.5rem, 11vw, 3.4rem);
+          line-height: 1.08;
+        }
+
+        .subtitle {
+          max-width: 340px;
+          font-size: 0.94rem;
+        }
+
+        .title-mark {
+          margin-left: 0.1em;
+        }
+
+        .doodle.one {
+          top: 7%;
+          left: 50%;
+          transform: translateX(-50%);
+        }
+
+        .doodle.four {
+          right: 50%;
+          bottom: 3%;
+          transform: translateX(50%);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="page">
+      <div class="grain"></div>
+      <svg
+        class="doodle one"
+        width="92"
+        height="28"
+        viewBox="0 0 92 28"
+        fill="none"
+      >
+        <path
+          d="M3 17C17 10 39 9 88 16"
+          stroke="#d4d0ff"
+          stroke-width="3.2"
+          stroke-linecap="round"
+        />
+      </svg>
+      <svg
+        class="doodle two"
+        width="40"
+        height="74"
+        viewBox="0 0 40 74"
+        fill="none"
+      >
+        <path
+          d="M17 3C30 14 8 25 24 35C34 41 9 51 24 71"
+          stroke="#bfe7ff"
+          stroke-width="3.2"
+          stroke-linecap="round"
+        />
+      </svg>
+      <svg
+        class="doodle three"
+        width="54"
+        height="36"
+        viewBox="0 0 54 36"
+        fill="none"
+      >
+        <path
+          d="M4 4C17 13 32 23 50 32"
+          stroke="#ffd4aa"
+          stroke-width="3.2"
+          stroke-linecap="round"
+        />
+      </svg>
+      <svg
+        class="doodle four"
+        width="66"
+        height="32"
+        viewBox="0 0 66 32"
+        fill="none"
+      >
+        <path
+          d="M3 24C13 10 28 8 61 4"
+          stroke="#cbeeb9"
+          stroke-width="3.2"
+          stroke-linecap="round"
+        />
+      </svg>
+      <div class="dot a"></div>
+      <div class="dot b"></div>
+      <div class="dot c"></div>
+      <div class="dot d"></div>
+
+      <main class="shell">
+        <section class="hero">
+          <p class="eyebrow">OAuth Gateway</p>
+          <h1 class="title">
+            Create your <span class="title-mark">Account</span>
+          </h1>
+          <p class="subtitle">Set up your access to continue</p>
+
+          <div class="card">
+            <div
+              id="client-meta"
+              class="context-box mb-6 rounded-2xl p-4 text-xs sm:text-sm"
+            ></div>
+
+            <form id="signup-form" class="space-y-4">
+              <div>
+                <label class="field-label">Full name</label>
+                <input
+                  id="name"
+                  name="name"
+                  type="text"
+                  required
+                  class="w-full text-sm outline-none p-3"
+                  placeholder="Your name"
+                />
+              </div>
+
+              <div>
+                <label class="field-label">Email</label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  required
+                  class="w-full text-sm outline-none"
+                  placeholder="you@example.com"
+                />
+              </div>
+
+              <div>
+                <label class="field-label">Password</label>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  required
+                  class="w-full text-sm outline-none"
+                  placeholder="Create a secure password"
+                />
+              </div>
+
+              <button
+                id="submit-button"
+                type="submit"
+                class="w-full py-3 rounded-xl font-medium"
+              >
+                Create Account & Continue
+              </button>
+            </form>
+
+            <div
+              id="status"
+              class="mt-4 hidden rounded-lg border px-4 py-2 text-xs"
+            ></div>
+
+            <p class="mt-5 text-center text-sm text-slate-500">
+              Already registered?
+              <a
+                class="footer-link underline"
+                id="signin-link"
+                href="/api/auth/signin"
+              >
+                Sign in
+              </a>
+            </p>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- JS untouched -->
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const clientId = params.get("client_id");
+      const redirectUri = params.get("redirect_uri");
+      const state = params.get("state");
+      const form = document.getElementById("signup-form");
+      const statusBox = document.getElementById("status");
+      const submitButton = document.getElementById("submit-button");
+      const clientMeta = document.getElementById("client-meta");
+      const signinLink = document.getElementById("signin-link");
+
+      const setStatus = (message, type) => {
+        statusBox.textContent = message;
+        statusBox.className = "mt-4 rounded-lg border px-4 py-2 text-xs";
+        statusBox.classList.remove("hidden");
+
+        if (type === "error") {
+          statusBox.classList.add(
+            "border-rose-300",
+            "bg-rose-50",
+            "text-rose-700",
+          );
+          return;
+        }
+
+        statusBox.classList.add(
+          "border-indigo-300",
+          "bg-indigo-50",
+          "text-indigo-700",
+        );
+      };
+
+      if (clientId) {
+        clientMeta.innerHTML = `<p><strong>Client ID:</strong> ${clientId}</p>
+        <p class="mt-1"><strong>Redirect:</strong> ${redirectUri || "Default redirect will be used"}</p>`;
+        signinLink.href = `/api/auth/signin${window.location.search}`;
+      } else {
+        clientMeta.innerHTML = `<p class="text-rose-300">Missing client_id</p>
+        <p class="mt-1">Access via a registered client</p>`;
+        submitButton.disabled = true;
+        submitButton.classList.add("opacity-50", "cursor-not-allowed");
+      }
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        setStatus("Creating user...", "info");
+
+        const payload = {
+          name: form.name.value,
+          email: form.email.value,
+          password: form.password.value,
+          clientId,
+          redirectUri: redirectUri || undefined,
+          state: state || undefined,
+        };
+
+        try {
+          const response = await fetch(window.location.pathname, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+          });
+          const result = await response.json();
+
+          if (!response.ok || !result.success) {
+            throw new Error(result.message || "Signup failed");
+          }
+
+          setStatus("Redirecting...", "info");
+          console.log("signup response:", result);
+          const redirectTo =
+            result && result.data && result.data.redirectTo
+              ? result.data.redirectTo
+              : `/api/auth/signin${window.location.search || ""}`;
+
+          setTimeout(() => {
+            window.location.href = redirectTo;
+          }, 700);
+        } catch (error) {
+          setStatus(error.message || "Signup failed", "error");
+        }
+      });
+    </script>
+  </body>
+</html>
