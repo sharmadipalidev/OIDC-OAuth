@@ -354,8 +354,4 @@ REFRESH_TOKEN_EXPIRES_IN=
 
 If your `.env` contains additional variables, they can be documented here as the project grows.
 
-## Known Design Notes
 
-- authorization codes are in memory, so they are not shared across server instances
-- the current ER diagram includes the runtime authorization-code store for clarity, even though it is not a physical DB table
-- the route definitions expose client registration at `/api/auth/auth/client/register` in the current implementation
