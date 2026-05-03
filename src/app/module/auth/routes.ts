@@ -1,14 +1,14 @@
 import { Router } from "express";
 import {
-    certs,
-    registerClientPage,
-    registerOAuthClient,
-    signin,
-    signinPage,
-    signup,
-    signupPage,
-    token,
-    userinfo
+  certs,
+  registerClientPage,
+  registerOAuthClient,
+  signin,
+  signinPage,
+  signup,
+  signupPage,
+  token,
+  userinfo,
 } from "./controller.js";
 import { verifyAccessToken } from "./middleware.js";
 
